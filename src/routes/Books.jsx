@@ -1,5 +1,6 @@
-import { NavLink, Outlet, useSearchParams } from "react-router-dom";
+import { Outlet, useSearchParams } from "react-router-dom";
 import { getBooks } from "./../data";
+import QueryNavLink from "./../components/QueryNavLink";
 
 export default function Books() {
     const books = getBooks();
@@ -32,13 +33,13 @@ export default function Books() {
               return title.startsWith(filter.toLowerCase());
             })
             .map(book => (
-            <NavLink className={({isActive})=> isActive ? "green" : ""}
+            <QueryNavLink className={({isActive})=> isActive ? "green" : ""}
               style={{ display: "block", margin: "1rem 0", textAlign:"left"}}
               to={`/books/${book.bookId}`}
               key={book.bookId}
             >
               {book.title}
-            </NavLink>
+            </QueryNavLink>
           ))}
         </nav>
         <Outlet />

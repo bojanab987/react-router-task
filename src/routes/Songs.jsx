@@ -1,5 +1,6 @@
-import { NavLink, Outlet, useSearchParams } from "react-router-dom";
+import { Outlet, useSearchParams } from "react-router-dom";
 import { getSongs } from "./../data";
+import QueryNavLink from "./../components/QueryNavLink";
 
 export default function Songs() {
     const songs=getSongs();
@@ -32,13 +33,13 @@ export default function Songs() {
               return title.startsWith(filter.toLocaleLowerCase());
             })
             .map(song => (
-            <NavLink className={({isActive})=> isActive ? "green" : ""}
+            <QueryNavLink className={({isActive})=> isActive ? "green" : ""}
               style={{ display: "block", margin: "1rem 0", textAlign:"left"}}
               to={`/songs/${song.songId}`}
               key={song.songId}
             >
               {song.title}
-            </NavLink>
+            </QueryNavLink>
           ))}
         </nav>
         <Outlet />
