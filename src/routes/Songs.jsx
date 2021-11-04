@@ -1,8 +1,9 @@
-import { Link, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useSearchParams } from "react-router-dom";
 import { getSongs } from "./../data";
 
 export default function Songs() {
     const songs=getSongs();
+    const [searchParams, setSearchParams] = useSearchParams();
     return (
         <div style={{ display: "flex" }}>
         <nav
@@ -11,14 +12,33 @@ export default function Songs() {
             padding: "1rem"
           }}
         >
-          {songs.map(song => (
-            <Link
+          <input
+            placeholder="Search songs..."
+            value={searchParams.get("filter") || ""}
+            onChange={event => {
+              let filter = event.target.value;
+              if (filter) {
+                setSearchParams({ filter });
+              } else {
+                setSearchParams({});
+              }
+            }}
+          />
+          {songs
+            .filter(song =>{
+              let filter = searchParams.get("filter");
+              if(!filter) return true;
+              let title = song.title.toLowerCase();
+              return title.startsWith(filter.toLocaleLowerCase());
+            })
+            .map(song => (
+            <NavLink className={({isActive})=> isActive ? "green" : ""}
               style={{ display: "block", margin: "1rem 0", textAlign:"left"}}
               to={`/songs/${song.songId}`}
               key={song.songId}
             >
               {song.title}
-            </Link>
+            </NavLink>
           ))}
         </nav>
         <Outlet />
